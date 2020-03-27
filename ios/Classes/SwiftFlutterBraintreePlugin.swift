@@ -3,6 +3,7 @@ import UIKit
 import Braintree
 import BraintreeDropIn
 
+//Developed by Dishant Mahajan
 public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControllerPresentingDelegate {
     
     public func paymentDriver(_ driver: Any, requestsPresentationOf viewController: UIViewController) {
