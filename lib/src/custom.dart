@@ -46,6 +46,7 @@ class Braintree {
       'authorization': authorization,
       'request': request.toJson(),
     });
+
     return BraintreePaymentMethodNonce.fromJson(result);
   }
 }

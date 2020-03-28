@@ -71,10 +71,10 @@ class _MyAppState extends State<MyApp> {
             RaisedButton(
               onPressed: () async {
                 final request = BraintreeCreditCardRequest(
-                  cardNumber: '4111111111111111',
-                  expirationMonth: '12',
-                  expirationYear: '2021',
-                );
+                    cardNumber: '4111111111111111',
+                    expirationMonth: '12',
+                    expirationYear: '2021',
+                    cvv: '233');
                 BraintreePaymentMethodNonce result =
                     await Braintree.tokenizeCreditCard(
                   tokenizationKey,

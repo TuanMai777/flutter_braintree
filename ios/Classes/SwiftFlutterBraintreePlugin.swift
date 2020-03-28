@@ -85,10 +85,11 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                     let cardNumber = request["cardNumber"] as! String
                     let expirationMonth = request["expirationMonth"] as! String
                     let expirationYear = request["expirationYear"] as! String
-                    
+                    let cvv = request["cvv"] as! String
+
                     let braintreeClient = BTAPIClient(authorization: authorization)!
                     let cardClient = BTCardClient(apiClient: braintreeClient)
-                    let card = BTCard(number: cardNumber, expirationMonth:expirationMonth, expirationYear: expirationYear, cvv: nil)
+                    let card = BTCard(number: cardNumber, expirationMonth:expirationMonth, expirationYear: expirationYear, cvv: cvv)
                     cardClient.tokenizeCard(card) { (tokenizedCard, error) in
                         
                         if(error != nil){
