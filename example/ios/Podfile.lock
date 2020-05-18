@@ -1,4 +1,6 @@
 PODS:
+  - Braintree/Apple-Pay (4.30.0):
+    - Braintree/Core
   - Braintree/Card (4.30.0):
     - Braintree/Core
   - Braintree/Core (4.30.0)
@@ -32,6 +34,7 @@ PODS:
   - BraintreeDropIn/UIKit (7.4.0)
   - Flutter (1.0.0)
   - flutter_braintree (0.2.0):
+    - Braintree/Apple-Pay
     - Braintree/PayPal
     - BraintreeDropIn
     - Flutter
@@ -55,8 +58,8 @@ SPEC CHECKSUMS:
   Braintree: 6c7b531ed255701cc69666a2f02d1324a2d95c41
   BraintreeDropIn: ee413ce4f94b86179e5ff3f98eb847219610bb96
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_braintree: 101b66de3f3ae397c9ee3593c2e24ed67a41eeab
+  flutter_braintree: ebacbca678593ba209717669e4dc2ddeeb237742
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

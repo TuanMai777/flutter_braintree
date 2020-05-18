@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 
@@ -14,6 +16,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (Platform.isIOS) {
+      checkApplePay();
+    } else {
+      checkGooglePay();
+    }
+  }
 
   void showNonce(BraintreePaymentMethodNonce nonce) {
     showDialog(
@@ -45,6 +59,40 @@ class _MyAppState extends State<MyApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            applePayAvailable
+                ? RaisedButton(
+                    onPressed: () async {
+                      try {
+                        BraintreePaymentMethodNonce result =
+                            await Braintree.payWithApplePay(
+                                tokenizationKey, 'Testing ', 10);
+                        if (result != null) {
+                          showNonce(result);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: Text('Test Apple Pay'),
+                  )
+                : Container(),
+            googlePayAvailable
+                ? RaisedButton(
+                    onPressed: () async {
+                      try {
+                        BraintreePaymentMethodNonce result =
+                            await Braintree.payWithGooglePay(
+                                tokenizationKey, 'AUD', 'Testing ', 10);
+                        if (result != null) {
+                          showNonce(result);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: Text('Test Google Pay'),
+                  )
+                : Container(),
             RaisedButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(
@@ -122,5 +170,28 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  bool applePayAvailable = false;
+
+  void checkApplePay() async {
+    bool result = await Braintree.isApplePayAvailable();
+    if (result != null) {
+      setState(() {
+        applePayAvailable = result;
+      });
+    }
+  }
+
+  bool googlePayAvailable = false;
+
+  void checkGooglePay() async {
+    bool result = await Braintree.isGooglePayAvailable(tokenizationKey);
+    if (result != null) {
+      print(result);
+      setState(() {
+        googlePayAvailable = result;
+      });
+    }
   }
 }

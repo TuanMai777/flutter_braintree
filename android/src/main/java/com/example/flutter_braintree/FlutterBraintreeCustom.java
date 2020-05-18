@@ -1,20 +1,25 @@
 package com.example.flutter_braintree;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
+import com.braintreepayments.api.GooglePayment;
 import com.braintreepayments.api.PayPal;
-import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
+import com.braintreepayments.api.interfaces.BraintreeResponseListener;
 import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
 import com.braintreepayments.api.models.CardBuilder;
+import com.braintreepayments.api.models.GooglePaymentRequest;
 import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.google.android.gms.wallet.TransactionInfo;
+import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.HashMap;
 
@@ -25,6 +30,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flutter_braintree_custom);
+
         try {
             Intent intent = getIntent();
             braintreeFragment = BraintreeFragment.newInstance(this, intent.getStringExtra("authorization"));
@@ -33,6 +39,10 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 tokenizeCreditCard();
             } else if (type.equals("requestPaypalNonce")) {
                 requestPaypalNonce();
+            } else if (type.equals("isGooglePayAvailable")) {
+                isGooglePayAvailable();
+            } else if (type.equals("payWithGooglePay")) {
+                payWithGooglePay();
             } else {
                 throw new Exception("Invalid request type: " + type);
             }
@@ -43,6 +53,44 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             finish();
             return;
         }
+    }
+
+    private void payWithGooglePay() {
+        Intent intent = getIntent();
+        GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
+                .transactionInfo(TransactionInfo.newBuilder()
+                        .setTotalPrice(intent.getStringExtra("total"))
+                        .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+                        .setCurrencyCode(intent.getStringExtra("currencyCode"))
+                        .build())
+                .paypalEnabled(false)
+                .googleMerchantName(intent.getStringExtra("label"))
+                // We recommend collecting billing address information, at minimum
+                // billing postal code, and passing that billing postal code with all
+                // Google Pay card transactions as a best practice.
+                .billingAddressRequired(true);
+
+        GooglePayment.requestPayment(braintreeFragment, googlePaymentRequest);
+
+    }
+
+    private void isGooglePayAvailable() {
+        GooglePayment.isReadyToPay(braintreeFragment, new BraintreeResponseListener<Boolean>() {
+            @Override
+            public void onResponse(Boolean isReadyToPay) {
+                Log.i("TAG", "isGooglePayAvailable " + isReadyToPay);
+                Intent data = new Intent();
+                data.putExtra("type", "isGooglePayAvailable");
+                if (isReadyToPay) {
+                    data.putExtra("result", true);
+                } else {
+                    data.putExtra("result", false);
+                }
+                setResult(RESULT_OK, data);
+                finish();
+            }
+
+        });
     }
 
     protected void tokenizeCreditCard() {

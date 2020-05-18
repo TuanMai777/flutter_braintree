@@ -29,6 +29,58 @@ class Braintree {
     return BraintreePaymentMethodNonce.fromJson(result);
   }
 
+  static Future<bool> isGooglePayAvailable(
+    String authorization,
+  ) async {
+    assert(authorization != null);
+    final result = await _kChannel.invokeMethod('isGooglePayAvailable', {
+      'authorization': authorization,
+    });
+    return result;
+  }
+
+  static Future<bool> isApplePayAvailable() async {
+    final result = await _kChannel.invokeMethod('isApplePayAvailable');
+    return result;
+  }
+
+  static Future<BraintreePaymentMethodNonce> payWithGooglePay(
+    String authorization,
+    String currencyCode,
+    String label,
+    double total,
+  ) async {
+    assert(authorization != null);
+    assert(currencyCode != null);
+    assert(label != null);
+    assert(total != null && total > 0);
+    final result = await _kChannel.invokeMethod('payWithGooglePay', {
+      'authorization': authorization,
+      'label': label,
+      'currencyCode': currencyCode,
+      'total': total.toString(),
+    });
+
+    return BraintreePaymentMethodNonce.fromJson(result);
+  }
+
+  static Future<BraintreePaymentMethodNonce> payWithApplePay(
+    String authorization,
+    String label,
+    double total,
+  ) async {
+    assert(authorization != null);
+    assert(label != null);
+    assert(total != null && total > 0);
+    final result = await _kChannel.invokeMethod('payWithApplePay', {
+      'authorization': authorization,
+      'label': label,
+      'total': total,
+    });
+
+    return BraintreePaymentMethodNonce.fromJson(result);
+  }
+
   /// Requests a PayPal payment method nonce.
   ///
   /// [authorization] must be either a valid client token or a valid tokenization key.

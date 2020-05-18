@@ -1,12 +1,13 @@
-import 'package:flutter/services.dart';
 import 'dart:async';
+
+import 'package:flutter/services.dart';
 
 import 'request.dart';
 import 'result.dart';
 
 class BraintreeDropIn {
   static const MethodChannel _kChannel =
-      const MethodChannel('flutter_braintree.drop_in');
+      const MethodChannel('flutter_braintree.custom');
 
   const BraintreeDropIn._();
 
