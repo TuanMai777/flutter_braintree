@@ -53,7 +53,7 @@ class Braintree {
     assert(authorization != null);
     assert(currencyCode != null);
     assert(label != null);
-    assert(total != null && total > 0);
+    assert(total != null && total >= 0);
     final result = await _kChannel.invokeMethod('payWithGooglePay', {
       'authorization': authorization,
       'label': label,
@@ -71,7 +71,7 @@ class Braintree {
   ) async {
     assert(authorization != null);
     assert(label != null);
-    assert(total != null && total > 0);
+    assert(total != null && total >= 0);
     final result = await _kChannel.invokeMethod('payWithApplePay', {
       'authorization': authorization,
       'label': label,

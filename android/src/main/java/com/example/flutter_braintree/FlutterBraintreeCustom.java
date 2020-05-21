@@ -143,6 +143,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     @Override
     public void onError(Exception error) {
+
         Intent result = new Intent();
         result.putExtra("error", error);
         setResult(2, result);
