@@ -109,16 +109,17 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
         } else if (call.method.equals("isApplePayAvailable")) {
             result.success(false);
         } else if (call.method.equals("isGooglePayAvailable")) {
-            Log.i("TAG","isGooglePayAvailable-called");
+
             Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
             intent.putExtra("type", "isGooglePayAvailable");
             intent.putExtra("authorization", (String) call.argument("authorization"));
             activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
         } else if (call.method.equals("payWithGooglePay")) {
-            Log.i("TAG","payWithGooglePay-called");
+
             Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
             intent.putExtra("type", "payWithGooglePay");
             intent.putExtra("authorization", (String) call.argument("authorization"));
+            intent.putExtra("testing", (boolean) call.argument("testing"));
             intent.putExtra("label", (String) call.argument("label"));
             intent.putExtra("currencyCode", (String) call.argument("currencyCode"));
             intent.putExtra("total", (String) call.argument("total"));
@@ -131,7 +132,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("TAG","isGooglePayAvailable-result");
+
         if (activeResult == null)
             return false;
 

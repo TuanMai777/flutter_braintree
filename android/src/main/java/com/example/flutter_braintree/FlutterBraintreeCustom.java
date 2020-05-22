@@ -2,7 +2,6 @@ package com.example.flutter_braintree;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -57,6 +56,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     private void payWithGooglePay() {
         Intent intent = getIntent();
+
         GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
                 .transactionInfo(TransactionInfo.newBuilder()
                         .setTotalPrice(intent.getStringExtra("total"))
@@ -64,11 +64,16 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                         .setCurrencyCode(intent.getStringExtra("currencyCode"))
                         .build())
                 .paypalEnabled(false)
+
                 .googleMerchantName(intent.getStringExtra("label"))
                 // We recommend collecting billing address information, at minimum
                 // billing postal code, and passing that billing postal code with all
                 // Google Pay card transactions as a best practice.
                 .billingAddressRequired(true);
+
+        if (!intent.getBooleanExtra("testing", true)) {
+            googlePaymentRequest.environment("PRODUCTION");
+        }
 
         GooglePayment.requestPayment(braintreeFragment, googlePaymentRequest);
 
@@ -78,7 +83,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         GooglePayment.isReadyToPay(braintreeFragment, new BraintreeResponseListener<Boolean>() {
             @Override
             public void onResponse(Boolean isReadyToPay) {
-                Log.i("TAG", "isGooglePayAvailable " + isReadyToPay);
+
                 Intent data = new Intent();
                 data.putExtra("type", "isGooglePayAvailable");
                 if (isReadyToPay) {

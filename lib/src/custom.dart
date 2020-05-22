@@ -49,16 +49,19 @@ class Braintree {
     String currencyCode,
     String label,
     double total,
+    bool testing,
   ) async {
     assert(authorization != null);
     assert(currencyCode != null);
     assert(label != null);
     assert(total != null && total >= 0);
+    assert(testing != null);
     final result = await _kChannel.invokeMethod('payWithGooglePay', {
       'authorization': authorization,
       'label': label,
       'currencyCode': currencyCode,
       'total': total.toString(),
+      "testing":testing
     });
 
     return BraintreePaymentMethodNonce.fromJson(result);
