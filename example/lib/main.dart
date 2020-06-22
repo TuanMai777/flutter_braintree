@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
                       try {
                         BraintreePaymentMethodNonce result =
                             await Braintree.payWithGooglePay(
-                                tokenizationKey, 'AUD', 'Testing ', 10);
+                                tokenizationKey, 'AUD', 'Testing ', 10, true);
                         if (result != null) {
                           showNonce(result);
                         }
@@ -93,6 +93,22 @@ class _MyAppState extends State<MyApp> {
                     child: Text('Test Google Pay'),
                   )
                 : Container(),
+            RaisedButton(
+              onPressed: () async {
+                try {
+                  String result =
+                      await Braintree.collectDeviceData(tokenizationKey);
+
+                  if (result != null) {
+                    print("Device Data");
+                    print(result);
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: Text('Collect Device Data'),
+            ),
             RaisedButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(

@@ -1,40 +1,43 @@
 PODS:
-  - Braintree/Apple-Pay (4.30.0):
+  - Braintree/Apple-Pay (4.34.0):
     - Braintree/Core
-  - Braintree/Card (4.30.0):
+  - Braintree/Card (4.34.0):
     - Braintree/Core
-  - Braintree/Core (4.30.0)
-  - Braintree/PaymentFlow (4.30.0):
+  - Braintree/Core (4.34.0)
+  - Braintree/DataCollector (4.34.0):
+    - Braintree/Core
+  - Braintree/PaymentFlow (4.34.0):
     - Braintree/Card
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPal (4.30.0):
+  - Braintree/PayPal (4.34.0):
     - Braintree/Core
     - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.30.0):
+  - Braintree/PayPalDataCollector (4.34.0):
     - Braintree/Core
     - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.30.0):
+  - Braintree/PayPalOneTouch (4.34.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
     - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.30.0)
-  - Braintree/UnionPay (4.30.0):
+  - Braintree/PayPalUtils (4.34.0)
+  - Braintree/UnionPay (4.34.0):
     - Braintree/Card
     - Braintree/Core
-  - BraintreeDropIn (7.4.0):
-    - BraintreeDropIn/DropIn (= 7.4.0)
-  - BraintreeDropIn/DropIn (7.4.0):
-    - Braintree/Card (~> 4.27)
-    - Braintree/Core (~> 4.27)
-    - Braintree/PaymentFlow (~> 4.27)
-    - Braintree/PayPal (~> 4.27)
-    - Braintree/UnionPay (~> 4.27)
+  - BraintreeDropIn (8.1.0):
+    - BraintreeDropIn/DropIn (= 8.1.0)
+  - BraintreeDropIn/DropIn (8.1.0):
+    - Braintree/Card (~> 4.32)
+    - Braintree/Core (~> 4.32)
+    - Braintree/PaymentFlow (~> 4.32)
+    - Braintree/PayPal (~> 4.32)
+    - Braintree/UnionPay (~> 4.32)
     - BraintreeDropIn/UIKit
-  - BraintreeDropIn/UIKit (7.4.0)
+  - BraintreeDropIn/UIKit (8.1.0)
   - Flutter (1.0.0)
   - flutter_braintree (0.2.0):
     - Braintree/Apple-Pay
+    - Braintree/DataCollector
     - Braintree/PayPal
     - BraintreeDropIn
     - Flutter
@@ -55,11 +58,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_braintree/ios"
 
 SPEC CHECKSUMS:
-  Braintree: 6c7b531ed255701cc69666a2f02d1324a2d95c41
-  BraintreeDropIn: ee413ce4f94b86179e5ff3f98eb847219610bb96
+  Braintree: 48154e70306eb3e6c81eaa87bbc5c5988c0d2784
+  BraintreeDropIn: fc3e96a8a2b5416e5e3a3beba119f0089713bc1e
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_braintree: ebacbca678593ba209717669e4dc2ddeeb237742
+  flutter_braintree: 811111dfa3b747895ffd7f050eb48c091e279408
 
-PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+PODFILE CHECKSUM: 15c8f91697ad44d5e6afa51e628ae1d30ecae346
 
 COCOAPODS: 1.9.1
