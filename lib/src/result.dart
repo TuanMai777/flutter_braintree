@@ -53,3 +53,16 @@ class BraintreePaymentMethodNonce {
   /// True if this payment method is the default for the current customer, false otherwise.
   final bool isDefault;
 }
+
+class BrainTreeDeviceData {
+  var deviceData;
+
+  BrainTreeDeviceData({@required this.deviceData});
+
+  factory BrainTreeDeviceData.fromJson(dynamic source) {
+    if (source == null) return null;
+    return BrainTreeDeviceData(
+      deviceData: source['deviceData'],
+    );
+  }
+}

@@ -61,10 +61,20 @@ class Braintree {
       'label': label,
       'currencyCode': currencyCode,
       'total': total.toString(),
-      "testing":testing
+      "testing": testing
     });
 
     return BraintreePaymentMethodNonce.fromJson(result);
+  }
+
+  static Future<String> collectDeviceData(String authorization) async {
+    assert(authorization != null);
+
+    final String result = await _kChannel.invokeMethod('collectDeviceData', {
+      'authorization': authorization,
+    });
+
+    return result;
   }
 
   static Future<BraintreePaymentMethodNonce> payWithApplePay(

@@ -175,6 +175,25 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                 result( false);
             }
             
+        }else if(call.method == "collectDeviceData"){
+            
+            let tokenizationKey = string(for: "authorization", in: call)
+            guard let authorization = tokenizationKey else {
+                result(FlutterError(code: "braintree_error", message: "Authorization not specified (no clientToken or tokenizationKey)", details: nil))
+                isHandlingResult = false
+                return
+            }
+            
+            
+            let braintreeClient = BTAPIClient(authorization: authorization)!
+            
+            let dataCollector:BTDataCollector = BTDataCollector.init(apiClient: braintreeClient)
+            dataCollector.collectDeviceData({ deviceData in
+                
+                result(deviceData);
+            })
+            
+            
         }else if(call.method == "payWithApplePay"){
             //
             //            guard !isHandlingResult else { self.setFlutterError(code: "payment_already_running", message: "Cannot launch another Payment activity while one is already running."); return }
@@ -187,7 +206,7 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                 self.setFlutterError(code:"braintree_error",message: "Authorization not specified (no clientToken or tokenizationKey)")
                 return
             }
-            print(authorization)
+            
             
             
             self.braintreeClient = BTAPIClient(authorization: authorization)!

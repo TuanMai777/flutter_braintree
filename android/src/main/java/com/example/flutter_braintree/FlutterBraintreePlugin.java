@@ -114,6 +114,12 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
             intent.putExtra("type", "isGooglePayAvailable");
             intent.putExtra("authorization", (String) call.argument("authorization"));
             activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+        }  else if (call.method.equals("collectDeviceData")) {
+
+            Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+            intent.putExtra("type", "collectDeviceData");
+            intent.putExtra("authorization", (String) call.argument("authorization"));
+            activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
         } else if (call.method.equals("payWithGooglePay")) {
 
             Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
@@ -144,6 +150,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
                         activeResult.success(data.getSerializableExtra("paymentMethodNonce"));
                     } else if (type.equals("isGooglePayAvailable")) {
                         activeResult.success(data.getBooleanExtra("result", false));
+                    } else if (type.equals("collectDeviceData")) {
+                        activeResult.success(data.getStringExtra("result"));
                     } else {
                         Exception error = new Exception("Invalid activity result type.");
                         activeResult.error("error", error.getMessage(), null);

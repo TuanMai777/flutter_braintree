@@ -2,11 +2,13 @@ package com.example.flutter_braintree;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
+import com.braintreepayments.api.DataCollector;
 import com.braintreepayments.api.GooglePayment;
 import com.braintreepayments.api.PayPal;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
@@ -42,6 +44,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 isGooglePayAvailable();
             } else if (type.equals("payWithGooglePay")) {
                 payWithGooglePay();
+            } else if (type.equals("collectDeviceData")) {
+                collectDeviceData();
             } else {
                 throw new Exception("Invalid request type: " + type);
             }
@@ -77,6 +81,21 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
         GooglePayment.requestPayment(braintreeFragment, googlePaymentRequest);
 
+    }
+
+    private void collectDeviceData(){
+
+        DataCollector.collectDeviceData(braintreeFragment, new BraintreeResponseListener<String>() {
+            @Override
+            public void onResponse(String deviceData) {
+                // send deviceData to your server
+                Intent data = new Intent();
+                data.putExtra("type", "collectDeviceData");
+                data.putExtra("result", deviceData);
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
     }
 
     private void isGooglePayAvailable() {
