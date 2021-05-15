@@ -22,10 +22,10 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
     private Activity activity;
     private Result activeResult;
 
-    private FlutterBraintreeDropIn dropIn;
+//    private FlutterBraintreeDropIn dropIn;
 
     public static void registerWith(Registrar registrar) {
-        FlutterBraintreeDropIn.registerWith(registrar);
+//        FlutterBraintreeDropIn.registerWith(registrar);
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.custom");
         FlutterBraintreePlugin plugin = new FlutterBraintreePlugin();
         plugin.activity = registrar.activity();
@@ -38,40 +38,40 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
         final MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_braintree.custom");
         channel.setMethodCallHandler(this);
 
-        dropIn = new FlutterBraintreeDropIn();
-        dropIn.onAttachedToEngine(binding);
+//        dropIn = new FlutterBraintreeDropIn();
+//        dropIn.onAttachedToEngine(binding);
     }
 
     @Override
     public void onDetachedFromEngine(FlutterPluginBinding binding) {
-        dropIn.onDetachedFromEngine(binding);
-        dropIn = null;
+//        dropIn.onDetachedFromEngine(binding);
+//        dropIn = null;
     }
 
     @Override
     public void onAttachedToActivity(ActivityPluginBinding binding) {
         activity = binding.getActivity();
         binding.addActivityResultListener(this);
-        dropIn.onAttachedToActivity(binding);
+//        dropIn.onAttachedToActivity(binding);
     }
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
         activity = null;
-        dropIn.onDetachedFromActivity();
+//        dropIn.onDetachedFromActivity();
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
         activity = binding.getActivity();
         binding.addActivityResultListener(this);
-        dropIn.onReattachedToActivityForConfigChanges(binding);
+//        dropIn.onReattachedToActivityForConfigChanges(binding);
     }
 
     @Override
     public void onDetachedFromActivity() {
         activity = null;
-        dropIn.onDetachedFromActivity();
+//        dropIn.onDetachedFromActivity();
     }
 
     @Override
@@ -142,30 +142,33 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
         if (activeResult == null)
             return false;
 
-        switch (requestCode) {
-            case CUSTOM_ACTIVITY_REQUEST_CODE:
-                if (resultCode == Activity.RESULT_OK) {
-                    String type = data.getStringExtra("type");
-                    if (type.equals("paymentMethodNonce")) {
+        if (requestCode == CUSTOM_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                String type = data.getStringExtra("type");
+                switch (type) {
+                    case "paymentMethodNonce":
                         activeResult.success(data.getSerializableExtra("paymentMethodNonce"));
-                    } else if (type.equals("isGooglePayAvailable")) {
+                        break;
+                    case "isGooglePayAvailable":
                         activeResult.success(data.getBooleanExtra("result", false));
-                    } else if (type.equals("collectDeviceData")) {
+                        break;
+                    case "collectDeviceData":
                         activeResult.success(data.getStringExtra("result"));
-                    } else {
+                        break;
+                    default:
                         Exception error = new Exception("Invalid activity result type.");
                         activeResult.error("error", error.getMessage(), null);
-                    }
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    activeResult.success(null);
-                } else {
-                    Exception error = (Exception) data.getSerializableExtra("error");
-                    activeResult.error("error", error.getMessage(), null);
+                        break;
                 }
-                activeResult = null;
-                return true;
-            default:
-                return false;
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                activeResult.success(null);
+            } else {
+                Exception error = (Exception) data.getSerializableExtra("error");
+                activeResult.error("error", error.getMessage(), null);
+            }
+            activeResult = null;
+            return true;
         }
+        return false;
     }
 }
