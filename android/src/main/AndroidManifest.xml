@@ -4,7 +4,17 @@
 
     <application>
         <activity android:name=".FlutterBraintreeCustom"
-            android:theme="@style/bt_transparent_activity">
+            android:theme="@style/bt_transparent_activity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="com.hello.world.mahajan" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+            </intent-filter>
+
+
         </activity>
 
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>

@@ -136,6 +136,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
         }
     }
 
+
+
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
 

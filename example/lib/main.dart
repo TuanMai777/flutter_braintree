@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 
@@ -22,11 +20,11 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
 
-    if (Platform.isIOS) {
-      checkApplePay();
-    } else {
-      checkGooglePay();
-    }
+    // if (Platform.isIOS) {
+    //   checkApplePay();
+    // } else {
+    //   checkGooglePay();
+    // }
   }
 
   void showNonce(BraintreePaymentMethodNonce nonce) {
@@ -60,7 +58,7 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             applePayAvailable
-                ? RaisedButton(
+                ? TextButton(
                     onPressed: () async {
                       try {
                         BraintreePaymentMethodNonce result =
@@ -77,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                   )
                 : Container(),
             googlePayAvailable
-                ? RaisedButton(
+                ? TextButton(
                     onPressed: () async {
                       try {
                         BraintreePaymentMethodNonce result =
@@ -93,7 +91,7 @@ class _MyAppState extends State<MyApp> {
                     child: Text('Test Google Pay'),
                   )
                 : Container(),
-            RaisedButton(
+            TextButton(
               onPressed: () async {
                 try {
                   String result =
@@ -109,7 +107,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('Collect Device Data'),
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(
                   tokenizationKey: tokenizationKey,
@@ -132,13 +130,13 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('LAUNCH NATIVE DROP-IN'),
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () async {
                 final request = BraintreeCreditCardRequest(
-                    cardNumber: '4111111111111111',
-                    expirationMonth: '12',
-                    expirationYear: '2021',
-                    cvv: '233');
+                    cardNumber: '4813900009988650',
+                    expirationMonth: '11',
+                    expirationYear: '2024',
+                    cvv: '382');
                 BraintreePaymentMethodNonce result =
                     await Braintree.tokenizeCreditCard(
                   tokenizationKey,
@@ -150,7 +148,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('TOKENIZE CREDIT CARD'),
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(
                   billingAgreementDescription:
@@ -168,7 +166,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('PAYPAL VAULT FLOW'),
             ),
-            RaisedButton(
+            TextButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(amount: '13.37');
                 BraintreePaymentMethodNonce result =

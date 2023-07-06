@@ -1,12 +1,12 @@
 class BraintreeDropInRequest {
   BraintreeDropInRequest({
-    this.clientToken,
-    this.tokenizationKey,
-    this.amount,
+    required this.clientToken,
+    required this.tokenizationKey,
+    required this.amount,
     this.collectDeviceData = false,
     this.requestThreeDSecureVerification = false,
-    this.googlePaymentRequest,
-    this.paypalRequest,
+    required this.googlePaymentRequest,
+    required this.paypalRequest,
     this.venmoEnabled = true,
     this.cardEnabled = true,
     this.maskCardNumber = false,
@@ -75,10 +75,10 @@ class BraintreeDropInRequest {
 
 class BraintreeCreditCardRequest {
   BraintreeCreditCardRequest({
-    this.cardNumber,
-    this.expirationMonth,
-    this.expirationYear,
-    this.cvv,
+    required this.cardNumber,
+    required this.expirationMonth,
+    required this.expirationYear,
+    required this.cvv,
   });
 
   /// Number shown on the credit card.
@@ -102,10 +102,10 @@ class BraintreeCreditCardRequest {
 
 class BraintreeGooglePaymentRequest {
   BraintreeGooglePaymentRequest({
-    this.totalPrice,
-    this.currencyCode,
+    required this.totalPrice,
+    required this.currencyCode,
     this.billingAddressRequired = true,
-    this.googleMerchantID,
+    required this.googleMerchantID,
   });
 
   /// Total price of the payment.
@@ -132,10 +132,10 @@ class BraintreeGooglePaymentRequest {
 
 class BraintreePayPalRequest {
   BraintreePayPalRequest({
-    this.amount,
-    this.currencyCode,
-    this.displayName,
-    this.billingAgreementDescription,
+    required this.amount,
+    required this.currencyCode,
+    required this.displayName,
+    required this.billingAgreementDescription,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.

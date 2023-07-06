@@ -2,12 +2,12 @@ import 'package:meta/meta.dart';
 
 class BraintreeDropInResult {
   const BraintreeDropInResult({
-    @required this.paymentMethodNonce,
-    @required this.deviceData,
+    required  this.paymentMethodNonce,
+    required  this.deviceData,
   });
 
   factory BraintreeDropInResult.fromJson(dynamic source) {
-    if (source == null) return null;
+    // if (source == null) return null;
     return BraintreeDropInResult(
       paymentMethodNonce:
           BraintreePaymentMethodNonce.fromJson(source['paymentMethodNonce']),
@@ -24,14 +24,14 @@ class BraintreeDropInResult {
 
 class BraintreePaymentMethodNonce {
   const BraintreePaymentMethodNonce({
-    @required this.nonce,
-    @required this.typeLabel,
-    @required this.description,
-    @required this.isDefault,
+    required  this.nonce,
+    required  this.typeLabel,
+    required  this.description,
+    required  this.isDefault,
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
-    if (source == null) return null;
+    // if (source == null) return null;
     return BraintreePaymentMethodNonce(
       nonce: source['nonce'],
       typeLabel: source['typeLabel'],
@@ -60,7 +60,7 @@ class BrainTreeDeviceData {
   BrainTreeDeviceData({@required this.deviceData});
 
   factory BrainTreeDeviceData.fromJson(dynamic source) {
-    if (source == null) return null;
+    // if (source == null) return null;
     return BrainTreeDeviceData(
       deviceData: source['deviceData'],
     );

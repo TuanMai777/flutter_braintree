@@ -4,12 +4,12 @@ version: 1.0.0
 homepage: https://github.com/Pikaju/FlutterBraintree
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.17.6 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  meta: ^1.3.0
+  meta: ^1.9.1
 
 flutter:
   plugin:
