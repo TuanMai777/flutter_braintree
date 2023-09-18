@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import com.braintreepayments.api.PayPalVaultRequest;
+
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -106,6 +108,13 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
             intent.putExtra("displayName", (String) request.get("displayName"));
             intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
             activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+//            String amount = (String) request.get("amount");
+//            if(amount ==null){
+//                paypalVaultFlow(call);
+//            }else{
+//                paypalCheckOutFlow(call);
+//            }
+
         } else if (call.method.equals("isApplePayAvailable")) {
             result.success(false);
         } else if (call.method.equals("isGooglePayAvailable")) {
@@ -135,8 +144,6 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
             activeResult = null;
         }
     }
-
-
 
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {

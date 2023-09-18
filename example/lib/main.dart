@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
+  static final String tokenizationKey = 'sandbox_5gpzt4pc_djn63vyk799r7w45';
 
   @override
   void initState() {
