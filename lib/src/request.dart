@@ -1,8 +1,8 @@
 class BraintreeDropInRequest {
   BraintreeDropInRequest({
-    required this.clientToken,
+    this.clientToken,
     required this.tokenizationKey,
-    required this.amount,
+    this.amount,
     this.collectDeviceData = false,
     this.requestThreeDSecureVerification = false,
     required this.googlePaymentRequest,
@@ -16,14 +16,14 @@ class BraintreeDropInRequest {
 
   /// Authorization allowing this client to communicate with Braintree.
   /// Either [clientToken] or [tokenizationKey] must be set.
-  String clientToken;
+  String? clientToken;
 
   /// Authorization allowing this client to communicate with Braintree.
   /// Either [clientToken] or [tokenizationKey] must be set.
   String tokenizationKey;
 
   /// Amount for the transaction. This is only used for 3D secure verfications.
-  String amount;
+  String? amount;
 
   /// Whether the Drop-in should collect and return device data for fraud prevention.
   bool collectDeviceData;
@@ -132,24 +132,24 @@ class BraintreeGooglePaymentRequest {
 
 class BraintreePayPalRequest {
   BraintreePayPalRequest({
-    required this.amount,
-    required this.currencyCode,
-    required this.displayName,
-    required this.billingAgreementDescription,
+    this.amount,
+    this.currencyCode,
+    this.displayName,
+    this.billingAgreementDescription,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
   /// If [amount] is set, PayPal will follow the one time payment (Checkout) flow.
-  String amount;
+  String? amount;
 
   /// Currency code. If set to null`null`, PayPal will choose it based on the active merchant account in the client token.
-  String currencyCode;
+  String? currencyCode;
 
   /// The merchant name displayed in the PayPal flow. If set to `null`, PayPal will use the company name in your Braintree account.
-  String displayName;
+  String? displayName;
 
   /// Description for the billing agreement for the Vault flow.
-  String billingAgreementDescription;
+  String? billingAgreementDescription;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {

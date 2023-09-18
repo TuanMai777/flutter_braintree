@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
                   googlePaymentRequest: BraintreeGooglePaymentRequest(
                     totalPrice: '4.20',
                     currencyCode: 'USD',
-                    billingAddressRequired: false,
+                    billingAddressRequired: false, googleMerchantID: '',
                   ),
                   paypalRequest: BraintreePayPalRequest(
                     amount: '4.20',
