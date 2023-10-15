@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 import Braintree
-import BraintreeDropIn
+//import BraintreeDropIn
 
 //Developed by Dishant Mahajan
 public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControllerPresentingDelegate, PKPaymentAuthorizationViewControllerDelegate {
@@ -29,19 +29,19 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
             
             isHandlingResult = true
             
-            let dropInRequest = BTDropInRequest()
+//            let dropInRequest = BTDropInRequest()
             
-            if let amount = string(for: "amount", in: call) {
-                dropInRequest.threeDSecureRequest?.amount = NSDecimalNumber(string: amount)
-            }
-            
-            if let requestThreeDSecureVerification = bool(for: "requestThreeDSecureVerification", in: call) {
-                dropInRequest.threeDSecureVerification = requestThreeDSecureVerification
-            }
-            
-            if let vaultManagerEnabled = bool(for: "vaultManagerEnabled", in: call) {
-                dropInRequest.vaultManager = vaultManagerEnabled
-            }
+//            if let amount = string(for: "amount", in: call) {
+//                dropInRequest.threeDSecureRequest?.amount = NSDecimalNumber(string: amount)
+//            }
+//            
+//            if let requestThreeDSecureVerification = bool(for: "requestThreeDSecureVerification", in: call) {
+//                dropInRequest.threeDSecureVerification = requestThreeDSecureVerification
+//            }
+//            
+//            if let vaultManagerEnabled = bool(for: "vaultManagerEnabled", in: call) {
+//                dropInRequest.vaultManager = vaultManagerEnabled
+//            }
             
             let clientToken = string(for: "clientToken", in: call)
             let tokenizationKey = string(for: "tokenizationKey", in: call)
@@ -52,20 +52,20 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                 return
             }
             
-            let dropInController = BTDropInController(authorization: authorization, request: dropInRequest) { (controller, braintreeResult, error) in
-                controller.dismiss(animated: true, completion: nil)
-                
-                self.handle(braintreeResult: braintreeResult, error: error, flutterResult: result)
-                self.isHandlingResult = false
-            }
-            
-            guard let existingDropInController = dropInController else {
-                result(FlutterError(code: "braintree_error", message: "BTDropInController not initialized (no API key or request specified?)", details: nil))
-                isHandlingResult = false
-                return
-            }
-            
-            UIApplication.shared.keyWindow?.rootViewController?.present(existingDropInController, animated: true, completion: nil)
+//            let dropInController = BTDropInController(authorization: authorization, request: dropInRequest) { (controller, braintreeResult, error) in
+//                controller.dismiss(animated: true, completion: nil)
+//                
+//                self.handle(braintreeResult: braintreeResult, error: error, flutterResult: result)
+//                self.isHandlingResult = false
+//            }
+//            
+//            guard let existingDropInController = dropInController else {
+//                result(FlutterError(code: "braintree_error", message: "BTDropInController not initialized (no API key or request specified?)", details: nil))
+//                isHandlingResult = false
+//                return
+//            }
+//            
+//            UIApplication.shared.keyWindow?.rootViewController?.present(existingDropInController, animated: true, completion: nil)
         }else if call.method == "tokenizeCreditCard" {
             
             isHandlingResult = true
@@ -88,7 +88,13 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                     
                     let braintreeClient = BTAPIClient(authorization: authorization)!
                     let cardClient = BTCardClient(apiClient: braintreeClient)
-                    let card = BTCard(number: cardNumber, expirationMonth:expirationMonth, expirationYear: expirationYear, cvv: cvv)
+                    let card = BTCard()
+                    
+                    card.number = cardNumber
+                    card.expirationMonth=expirationMonth
+                    card.expirationYear=expirationYear
+                    card.cvv=cvv
+                    
                     cardClient.tokenizeCard(card) { (tokenizedCard, error) in
                         
                         if(error != nil){
@@ -100,7 +106,7 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                         
                         let resultDict: [String: Any?] = ["nonce": tokenizedCard?.nonce ,
                                                           "typeLabel": tokenizedCard?.type ,
-                                                          "description": tokenizedCard?.localizedDescription ,
+                                                          "description": tokenizedCard?.description ,
                                                           "isDefault":tokenizedCard?.isDefault ]
                         
                         
@@ -133,18 +139,20 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                     let billingAgreementDescription = requestParams["billingAgreementDescription"] as! String
                     let braintreeClient = BTAPIClient(authorization: authorization)!
                     let payPalDriver = BTPayPalDriver(apiClient: braintreeClient)
-                    payPalDriver.viewControllerPresentingDelegate = self
-                    //            payPalDriver.appSwitchDelegate = UIApplication.shared.keyWindow?.rootViewController
                     
-                    let request = BTPayPalRequest()
+//                    payPalDriver.viewControllerPresentingDelegate = self
+                    //            payPalDriver.appSwitchDelegate = UIApplication.shared.keyWindow?.rootViewController
+     
+                    let request = BTPayPalVaultRequest()
+                    
                     request.displayName = displayName
                     request.billingAgreementDescription = billingAgreementDescription //Displayed in customer's PayPal account
-                    payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
+                    payPalDriver.tokenizePayPalAccount(with: request) { (tokenizedPayPalAccount, error) -> Void in
                         if let tokenizedPayPalAccount = tokenizedPayPalAccount {
                             print("Got a nonce: \(tokenizedPayPalAccount.nonce)")
                             let resultDict: [String: Any?] = ["nonce": tokenizedPayPalAccount.nonce ,
                                                               "typeLabel": tokenizedPayPalAccount.type ,
-                                                              "description": tokenizedPayPalAccount.localizedDescription ,
+                                                              "description": tokenizedPayPalAccount.description ,
                                                               "isDefault":tokenizedPayPalAccount.isDefault ]
                             
                             
@@ -321,7 +329,7 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
             
             let resultDict: [String: Any?] = ["nonce": nonce?.nonce ,
                                               "typeLabel": nonce?.type ,
-                                              "description": nonce?.localizedDescription ,
+                                              "description": nonce?.description ,
                                               "isDefault":nonce?.isDefault ]
             
             
@@ -339,24 +347,24 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
     
     
     
-    private func handle(braintreeResult: BTDropInResult?, error: Error?, flutterResult: FlutterResult) {
-        if error != nil {
-            flutterResult(FlutterError(code: "braintree_error", message: error?.localizedDescription, details: nil))
-        }
-        else if braintreeResult?.isCancelled ?? false {
-            flutterResult(nil)
-        }
-        else if let braintreeResult = braintreeResult {
-            let nonceResultDict: [String: Any?] = ["nonce": braintreeResult.paymentMethod?.nonce,
-                                                   "typeLabel": braintreeResult.paymentMethod?.type,
-                                                   "description": braintreeResult.paymentMethod?.localizedDescription,
-                                                   "isDefault": braintreeResult.paymentMethod?.isDefault]
-            
-            let resultDict: [String: Any?] = ["paymentMethodNonce": nonceResultDict]
-            
-            flutterResult(resultDict)
-        }
-    }
+//    private func handle(braintreeResult: BTDropInResult?, error: Error?, flutterResult: FlutterResult) {
+//        if error != nil {
+//            flutterResult(FlutterError(code: "braintree_error", message: error?.localizedDescription, details: nil))
+//        }
+//        else if braintreeResult?.isCancelled ?? false {
+//            flutterResult(nil)
+//        }
+//        else if let braintreeResult = braintreeResult {
+//            let nonceResultDict: [String: Any?] = ["nonce": braintreeResult.paymentMethod?.nonce,
+//                                                   "typeLabel": braintreeResult.paymentMethod?.type,
+//                                                   "description": braintreeResult.paymentMethod?.localizedDescription,
+//                                                   "isDefault": braintreeResult.paymentMethod?.isDefault]
+//            
+//            let resultDict: [String: Any?] = ["paymentMethodNonce": nonceResultDict]
+//            
+//            flutterResult(resultDict)
+//        }
+//    }
     
     
     private func string(for key: String, in call: FlutterMethodCall) -> String? {
