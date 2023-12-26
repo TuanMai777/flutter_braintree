@@ -32,6 +32,7 @@ import com.braintreepayments.api.ThreeDSecureClient;
 import com.braintreepayments.api.ThreeDSecurePostalAddress;
 import com.braintreepayments.api.ThreeDSecureRequest;
 import com.braintreepayments.api.ThreeDSecureResult;
+import com.braintreepayments.api.UserCanceledException;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
 
@@ -77,10 +78,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
                 throw new Exception("Invalid request type: " + type);
             }
         } catch (Exception e) {
-            Intent result = new Intent();
-            result.putExtra("error", e);
-            setResult(2, result);
-            finish();
+            onError(e);
         }
     }
 
@@ -264,8 +262,25 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
 
     @Override
     public void onPayPalFailure(@NonNull Exception error) {
-        Log.d("Paypal Error", error.getMessage());
+        if (error instanceof UserCanceledException) {
+            if(((UserCanceledException) error).isExplicitCancelation()){
+                onCancel();
+            }
+        } else {
+            onError(error);
+        }
     }
 
+    public void onCancel() {
+        setResult(RESULT_CANCELED);
+        finish();
+    }
+
+    public void onError(Exception error) {
+        Intent result = new Intent();
+        result.putExtra("error", error);
+        setResult(2, result);
+        finish();
+    }
 
 }

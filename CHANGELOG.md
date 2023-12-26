@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Fix paypal in android
+
 ## 0.5.3+3
 
 * Fix disabling card not working for drop-in UI
