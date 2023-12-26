@@ -34,9 +34,9 @@ class BraintreePaymentMethodNonce {
     // if (source == null) return null;
     return BraintreePaymentMethodNonce(
       nonce: source['nonce'],
-      typeLabel: source['typeLabel'],
-      description: source['description'],
-      isDefault: source['isDefault'],
+      typeLabel: source['typeLabel']??"",
+      description: source['description']??"",
+      isDefault: source['isDefault']??false,
     );
   }
 

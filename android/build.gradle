@@ -44,18 +44,11 @@ android {
 }
 
 dependencies {
-//    implementation 'com.braintreepayments.api:drop-in:4.1.1'
-//    implementation 'com.braintreepayments.api:braintree:3.17.4'
-//    implementation 'com.braintreepayments.api:data-collector:3.17.4'
-//    implementation 'com.braintreepayments.api:google-payment:3.3.1'
-
-    implementation 'com.braintreepayments.api:card:4.38.1'
-    implementation 'com.braintreepayments.api:data-collector:4.38.1'
-    implementation 'com.braintreepayments.api:google-pay:4.38.1'
-    implementation 'com.braintreepayments.api:three-d-secure:4.38.1'
-    implementation 'com.braintreepayments.api:paypal:4.38.1'
-
-
+    implementation 'com.braintreepayments.api:card:4.39.0'
+    implementation 'com.braintreepayments.api:data-collector:4.39.0'
+    implementation 'com.braintreepayments.api:google-pay:4.39.0'
+    implementation 'com.braintreepayments.api:three-d-secure:4.39.0'
+    implementation 'com.braintreepayments.api:paypal:4.39.0'
 
     implementation 'io.card:android-sdk:5.5.1'
     implementation 'com.google.android.gms:play-services-wallet:19.2.1'

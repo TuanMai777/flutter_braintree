@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutter_braintree_example"
+        applicationId "com.example.flutterbraintreeexample"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode flutterVersionCode.toInteger()
@@ -57,9 +57,20 @@ flutter {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.braintreepayments.api:card:4.39.0'
+    implementation 'com.braintreepayments.api:data-collector:4.39.0'
+    implementation 'com.braintreepayments.api:google-pay:4.39.0'
+    implementation 'com.braintreepayments.api:three-d-secure:4.39.0'
+    implementation 'com.braintreepayments.api:paypal:4.39.0'
+
+    implementation 'io.card:android-sdk:5.5.1'
+    implementation 'com.google.android.gms:play-services-wallet:19.2.1'
+
+
 }
