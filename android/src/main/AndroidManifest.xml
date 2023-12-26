@@ -2,19 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_braintree">
 
-    <application>
+    <application
+        >
         <activity android:name=".FlutterBraintreeCustom"
-            android:theme="@style/bt_transparent_activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="com.hello.world.mahajan" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
+                <data android:scheme="${applicationId}.braintree" />
             </intent-filter>
+        </activity>
 
 
+        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:exported="true">
         </activity>
 
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>

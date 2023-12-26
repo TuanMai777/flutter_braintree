@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 
@@ -13,18 +15,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static final String tokenizationKey = 'sandbox_5gpzt4pc_djn63vyk799r7w45';
+  static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    // if (Platform.isIOS) {
-    //   checkApplePay();
-    // } else {
-    //   checkGooglePay();
-    // }
+    if (Platform.isIOS) {
+      checkApplePay();
+    } else {
+      checkGooglePay();
+    }
   }
 
   void showNonce(BraintreePaymentMethodNonce nonce) {
@@ -153,9 +155,9 @@ class _MyAppState extends State<MyApp> {
                 final request = BraintreePayPalRequest(
                   billingAgreementDescription:
                       'I hearby agree that flutter_braintree is great.',
-                  displayName: 'Your Company',
+                  displayName: 'Your Company', amount: '10',
                 );
-                BraintreePaymentMethodNonce result =
+                BraintreePaymentMethodNonce? result =
                     await Braintree.requestPaypalNonce(
                   tokenizationKey,
                   request,

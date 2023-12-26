@@ -4,27 +4,13 @@
 
     <application android:icon="@mipmap/ic_launcher">
 
-        <activity android:name=".MyPaymentsActivity"
-            android:exported="false"
-            tools:ignore="AppLinkUrlError">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW"/>-->
-<!--                <data android:scheme="flutter_braintree" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--            </intent-filter>-->
-        </activity>
-
-
         <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:name="com.example.flutterbraintreeexample.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:theme="@style/LaunchTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-
-
+            android:windowSoftInputMode="adjustResize">
 
             <!--
                  This keeps the window background of the activity showing
@@ -43,16 +29,23 @@
             </intent-filter>
         </activity>
 
-        <!-- <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity" -->
-        <!-- android:launchMode="singleTask"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.VIEW" /> -->
-        <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
-        <!-- <data android:scheme="com.example.flutterbraintreeexample.braintree" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
+            android:theme="@style/bt_transparent_activity" android:exported="true"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${applicationId}.return.from.braintree" />
+            </intent-filter>
+        </activity>
 
+
+
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

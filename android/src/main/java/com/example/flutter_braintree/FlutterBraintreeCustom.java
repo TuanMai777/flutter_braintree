@@ -24,6 +24,7 @@ import com.braintreepayments.api.GooglePayRequestPaymentCallback;
 import com.braintreepayments.api.PayPalAccountNonce;
 import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalListener;
+import com.braintreepayments.api.PayPalRequest;
 import com.braintreepayments.api.PayPalVaultRequest;
 import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
@@ -43,6 +44,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     private DataCollector dataCollector;
     private ThreeDSecureClient threeDSecureClient;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,15 +52,17 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
 
         try {
             Intent intent = getIntent();
-            braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"), "com.hello.world.mahajan");
-//                    "com.example.flutter_braintree_example.braintree");
-            googlePayClient = new GooglePayClient(braintreeClient);
+            String returnUrlScheme = (getPackageName() + ".return.from.braintree").replace("_", "").toLowerCase();
+
+            braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"), returnUrlScheme);
+            googlePayClient = new GooglePayClient(this, braintreeClient);
             dataCollector = new DataCollector(braintreeClient);
-            payPalClient = new PayPalClient(braintreeClient);
+            payPalClient = new PayPalClient(this, braintreeClient);
             payPalClient.setListener(this);
-            threeDSecureClient = new ThreeDSecureClient(braintreeClient);
+            threeDSecureClient = new ThreeDSecureClient(this, braintreeClient);
 
             String type = intent.getStringExtra("type");
+            assert type != null;
             if (type.equals("tokenizeCreditCard")) {
                 tokenizeCreditCard();
             } else if (type.equals("requestPaypalNonce")) {
@@ -77,7 +81,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             result.putExtra("error", e);
             setResult(2, result);
             finish();
-            return;
         }
     }
 
@@ -127,8 +130,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
                 }
             });
         }
-
-//        else if (requestCode == BraintreeRequestCodes.THREE_D_SECURE){
+//        else if (requestCode == BraintreeRequestCodes.THREE_D_SECURE) {
 //            threeDSecureClient.onActivityResult(resultCode, data, (threeDSecureResult, error) -> {
 //                // send threeDSecureResult.getTokenizedCard().getString() to your server
 //            });
@@ -178,7 +180,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
 
             } else {
                 threeDSecureProcess(cardNonce);
-//                sendNonceBack(cardNonce.getString(), cardNonce.getCardType(), cardNonce.getBin(), cardNonce.isDefault());
             }
 
         });
@@ -213,7 +214,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             // optional: inspect the lookup result and prepare UI if a challenge is required
             if (threeDSecureLookupResult != null) {
                 threeDSecureClient.continuePerformVerification(this, threeDSecureRequest, threeDSecureLookupResult, (threeDSecureResult, verificationError) -> {
-                    // send threeDSecureResult.getTokenizedCard().getString() nonce to your server
                 });
             } else {
                 sendNonceBack(cardNonce.getString(), cardNonce.getCardType(), cardNonce.getBin(), cardNonce.isDefault());
@@ -222,7 +222,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         });
 
     }
-
 
 
     @Override
@@ -235,49 +234,11 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     protected void requestPaypalNonce() {
         Intent intent = getIntent();
 
-
         PayPalVaultRequest vaultRequest = new PayPalVaultRequest();
-
         vaultRequest.setDisplayName(intent.getStringExtra("displayName"));
         vaultRequest.setBillingAgreementDescription(intent.getStringExtra("billingAgreementDescription"));
         payPalClient.tokenizePayPalAccount(this, vaultRequest);
 
-
-
-//        PayPalVaultRequest request = new PayPalVaultRequest(intent.getStringExtra("amount"))
-//                .currencyCode(intent.getStringExtra("currencyCode"))
-//                .displayName(intent.getStringExtra("displayName"))
-//                .billingAgreementDescription(intent.getStringExtra("billingAgreementDescription"))
-//                .intent(PayPalRequest.INTENT_AUTHORIZE);
-//
-//        if (intent.getStringExtra("amount") == null) {
-//            // Vault flow
-//            PayPal.requestBillingAgreement(braintreeFragment, request);
-//        } else {
-//            // Checkout flow
-//            PayPal.requestOneTimePayment(braintreeFragment, request);
-//        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("Error", "Resume Called");
-//        BrowserSwitchResult browserSwitchResult = braintreeClient.deliverBrowserSwitchResult(this);
-
-//        if (payPalClient != null && browserSwitchResult != null && browserSwitchResult.getRequestCode() == BraintreeRequestCodes.PAYPAL) {
-//            payPalClient.onBrowserSwitchResult(browserSwitchResult, (payPalAccountNonce, error) -> {
-//                if (payPalAccountNonce != null) {
-//                    // Send nonce to server
-//                    String nonce = payPalAccountNonce.getString();
-//                    sendNonceBack(nonce, payPalAccountNonce.getClientMetadataId(), payPalAccountNonce.getAuthenticateUrl(), payPalAccountNonce.isDefault());
-//                } else {
-//                    // handle error
-//                    Log.d("Error", error.getMessage());
-//                }
-//            });
-//        }
     }
 
 
@@ -298,7 +259,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     @Override
     public void onPayPalSuccess(@NonNull PayPalAccountNonce payPalAccountNonce) {
         String nonce = payPalAccountNonce.getString();
-        Log.i("nonce",nonce);
         sendNonceBack(nonce, payPalAccountNonce.getClientMetadataId(), payPalAccountNonce.getAuthenticateUrl(), payPalAccountNonce.isDefault());
     }
 
@@ -307,35 +267,5 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         Log.d("Paypal Error", error.getMessage());
     }
 
-    //    @Override
-//    public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-//        HashMap<String, Object> nonceMap = new HashMap<String, Object>();
-//        nonceMap.put("nonce", paymentMethodNonce.getNonce());
-//        nonceMap.put("typeLabel", paymentMethodNonce.getTypeLabel());
-//        nonceMap.put("description", paymentMethodNonce.getDescription());
-//        nonceMap.put("isDefault", paymentMethodNonce.isDefault());
-//
-//        Intent result = new Intent();
-//        result.putExtra("type", "paymentMethodNonce");
-//        result.putExtra("paymentMethodNonce", nonceMap);
-//        setResult(RESULT_OK, result);
-//        finish();
-//    }
-//
-//    @Override
-//    public void onCancel(int requestCode) {
-//        setResult(RESULT_CANCELED);
-//        finish();
-//    }
-//
-//    @Override
-//    public void onError(Exception error) {
-//
-//        Intent result = new Intent();
-//        result.putExtra("error", error);
-//        setResult(2, result);
-//        finish();
-//    }
-//
 
 }
