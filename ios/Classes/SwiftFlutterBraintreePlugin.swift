@@ -95,7 +95,7 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin, BTViewControl
                     card.expirationYear=expirationYear
                     card.cvv=cvv
                     
-                    cardClient.tokenizeCard(card) { (tokenizedCard, error) in
+                    cardClient.tokenize(card) { (tokenizedCard, error) in
                         
                         if(error != nil){
                             result(FlutterError(code: "braintree_error", message: error?.localizedDescription, details: nil))

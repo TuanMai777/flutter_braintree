@@ -2,43 +2,38 @@ package com.example.flutter_braintree;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.braintreepayments.api.BraintreeClient;
 import com.braintreepayments.api.BraintreeRequestCodes;
-import com.braintreepayments.api.BrowserSwitchResult;
 import com.braintreepayments.api.Card;
 import com.braintreepayments.api.CardClient;
 import com.braintreepayments.api.CardNonce;
 import com.braintreepayments.api.DataCollector;
 import com.braintreepayments.api.DataCollectorCallback;
 import com.braintreepayments.api.GooglePayClient;
-import com.braintreepayments.api.GooglePayIsReadyToPayCallback;
+import com.braintreepayments.api.GooglePayListener;
 import com.braintreepayments.api.GooglePayRequest;
 import com.braintreepayments.api.GooglePayRequestPaymentCallback;
 import com.braintreepayments.api.PayPalAccountNonce;
 import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalListener;
-import com.braintreepayments.api.PayPalRequest;
 import com.braintreepayments.api.PayPalVaultRequest;
 import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
 import com.braintreepayments.api.ThreeDSecureClient;
 import com.braintreepayments.api.ThreeDSecurePostalAddress;
 import com.braintreepayments.api.ThreeDSecureRequest;
-import com.braintreepayments.api.ThreeDSecureResult;
 import com.braintreepayments.api.UserCanceledException;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.HashMap;
 
-public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalListener {
+public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalListener, GooglePayListener {
     private BraintreeClient braintreeClient;
     private PayPalClient payPalClient;
     private GooglePayClient googlePayClient;
@@ -56,7 +51,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             String returnUrlScheme = (getPackageName() + ".return.from.braintree").replace("_", "").toLowerCase();
 
             braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"), returnUrlScheme);
-            googlePayClient = new GooglePayClient(this, braintreeClient);
+            googlePayClient = new GooglePayClient( braintreeClient);
+//            googlePayClient.setListener(this);
             dataCollector = new DataCollector(braintreeClient);
             payPalClient = new PayPalClient(this, braintreeClient);
             payPalClient.setListener(this);
@@ -283,4 +279,16 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         finish();
     }
 
+
+    @Override
+    public void onGooglePaySuccess(@NonNull PaymentMethodNonce paymentMethodNonce) {
+        // send this nonce to your server
+        String nonce = paymentMethodNonce.getString();
+        sendNonceBack(nonce, "", "", paymentMethodNonce.isDefault());
+    }
+
+    @Override
+    public void onGooglePayFailure(@NonNull Exception error) {
+       onError(error);
+    }
 }

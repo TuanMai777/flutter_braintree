@@ -27,9 +27,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion 34
     namespace 'com.example.flutter_braintree_example'
-    lintOptions {
-        disable 'InvalidPackage'
-    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -49,6 +46,9 @@ android {
         }
     }
     namespace 'com.example.flutter_braintree_example'
+    lint {
+        disable 'InvalidPackage'
+    }
 }
 
 flutter {
