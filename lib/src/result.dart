@@ -2,8 +2,8 @@ import 'package:meta/meta.dart';
 
 class BraintreeDropInResult {
   const BraintreeDropInResult({
-    required  this.paymentMethodNonce,
-    required  this.deviceData,
+    required this.paymentMethodNonce,
+    required this.deviceData,
   });
 
   factory BraintreeDropInResult.fromJson(dynamic source) {
@@ -24,19 +24,19 @@ class BraintreeDropInResult {
 
 class BraintreePaymentMethodNonce {
   const BraintreePaymentMethodNonce({
-    required  this.nonce,
-    required  this.typeLabel,
-    required  this.description,
-    required  this.isDefault,
+    required this.nonce,
+    required this.typeLabel,
+    required this.description,
+    required this.isDefault,
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
-    // if (source == null) return null;
+    if (source == null) throw new Exception("Cancelled");
     return BraintreePaymentMethodNonce(
       nonce: source['nonce'],
-      typeLabel: source['typeLabel']??"",
-      description: source['description']??"",
-      isDefault: source['isDefault']??false,
+      typeLabel: source['typeLabel'] ?? "",
+      description: source['description'] ?? "",
+      isDefault: source['isDefault'] ?? false,
     );
   }
 
