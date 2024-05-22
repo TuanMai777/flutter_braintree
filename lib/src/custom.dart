@@ -107,11 +107,17 @@ class Braintree {
   ) async {
     assert(authorization != null);
     assert(request != null);
-    final result = await _kChannel.invokeMethod('requestPaypalNonce', {
-      'authorization': authorization,
-      'request': request.toJson(),
-    });
+    try{
+      assert(authorization != null);
+      assert(request != null);
+      final result = await _kChannel.invokeMethod('requestPaypalNonce', {
+        'authorization': authorization,
+        'request': request.toJson(),
+      });
 
-    return BraintreePaymentMethodNonce.fromJson(result);
+      return BraintreePaymentMethodNonce.fromJson(result);
+    }catch(e){
+      throw e;
+    }
   }
 }
