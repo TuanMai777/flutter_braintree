@@ -261,6 +261,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         if (error instanceof UserCanceledException) {
             if(((UserCanceledException) error).isExplicitCancelation()){
                 onCancel();
+            }else{
+                finish();
             }
         } else {
             onError(error);

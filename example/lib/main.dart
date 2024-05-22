@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
                 ? TextButton(
                     onPressed: () async {
                       try {
-                        BraintreePaymentMethodNonce result =
+                        BraintreePaymentMethodNonce? result =
                             await Braintree.payWithApplePay(
                                 tokenizationKey, 'Testing ', 10);
                         if (result != null) {
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
                 ? TextButton(
                     onPressed: () async {
                       try {
-                        BraintreePaymentMethodNonce result =
+                        BraintreePaymentMethodNonce? result =
                             await Braintree.payWithGooglePay(
                                 tokenizationKey, 'AUD', 'Testing ', 10, true);
                         if (result != null) {
@@ -139,7 +139,7 @@ class _MyAppState extends State<MyApp> {
                     expirationMonth: '11',
                     expirationYear: '2024',
                     cvv: '382');
-                BraintreePaymentMethodNonce result =
+                BraintreePaymentMethodNonce? result =
                     await Braintree.tokenizeCreditCard(
                   tokenizationKey,
                   request,
@@ -171,8 +171,8 @@ class _MyAppState extends State<MyApp> {
             TextButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(amount: '13.37');
-                BraintreePaymentMethodNonce result =
-                    await Braintree.requestPaypalNonce(
+                BraintreePaymentMethodNonce? result =
+                await Braintree.requestPaypalNonce(
                   tokenizationKey,
                   request,
                 );

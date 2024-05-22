@@ -31,7 +31,6 @@ class BraintreePaymentMethodNonce {
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
-    if (source == null) throw new Exception("Cancelled");
     return BraintreePaymentMethodNonce(
       nonce: source['nonce'],
       typeLabel: source['typeLabel'] ?? "",
